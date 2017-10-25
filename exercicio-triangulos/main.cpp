@@ -2,33 +2,36 @@
 #include <stdio.h>
 #include <GL/glut.h>
 
-#define LEFT -2
-#define RIGHT 25
-#define TOP 16
-#define BOTTOM -2
+#define MIN_X -10
+#define MAX_X 10
+#define MIN_Y -10
+#define MAX_Y 10
 
-void eixos()
+// Desenha um plano cartesiano
+void plano_cartesiano()
 {
-    glLineWidth(2);
-    glColor3f(0.0, 0.0, 0.0);
+    glLineWidth(1);
+    glColor3f(0.75, 0.75, 0.75);
 
-    for (float i = 0; i <= RIGHT; i = i + 1)
+    // Desenha linha das unidades
+    for (float i = MIN_X; i <= MAX_X; i = i + 1)
     {
         glBegin(GL_LINES);
-        glVertex2f(0, i);
-        glVertex2f(-0.5, i);
-        glVertex2f(i, 0);
-        glVertex2f(i, -0.5);
+        glVertex2f(MIN_X, i);
+        glVertex2f(MAX_X, i);
+        glVertex2f(i, MAX_Y);
+        glVertex2f(i, MIN_Y);
         glEnd();
     }
 
+    // Desenha linhas dos eixos
     glLineWidth(2);
     glColor3f(0.0, 0.0, 0.0);
     glBegin(GL_LINES);
-    glVertex2f(0.0, TOP);
-    glVertex2f(0.0, BOTTOM);
-    glVertex2f(LEFT, 0.0);
-    glVertex2f(RIGHT, 0.0);
+    glVertex2f(0.0, MAX_Y);
+    glVertex2f(0.0, MIN_Y);
+    glVertex2f(MIN_X, 0.0);
+    glVertex2f(MAX_X, 0.0);
     glEnd();
 }
 
@@ -40,20 +43,15 @@ void desenha(void)
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    eixos();
+    plano_cartesiano();
 
     glFlush();
 }
 
 void teclado(unsigned char tecla, int x, int y)
 {
-    switch (tecla)
-    {
-    case 27:
-    case 'q':
+    if (tecla == 27)
         exit(0);
-        break;
-    }
 }
 
 int main(int argc, char **argv)
@@ -67,7 +65,7 @@ int main(int argc, char **argv)
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(LEFT, RIGHT, BOTTOM, TOP, -1, 1);
+    glOrtho(MIN_X, MAX_X, MIN_Y, MAX_Y, -1, 1);
 
     glutMainLoop();
 

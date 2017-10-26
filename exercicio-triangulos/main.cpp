@@ -56,8 +56,16 @@ void desenha(void)
 
     plano_cartesiano();
 
-    // Desenha triângulo
+    // Desenha primeiro triângulo
     glColor3f(0.7, 0.2, 0.0);
+    triangulo();
+
+    // Desenha segundo triângulo com transformações geométricas
+    glRotated(-35, 0, 0, 1);
+    glTranslated(-5, -4, 0);
+    glScaled(0.5, 1.5, 1);
+    glTranslated(15, -2, 0);
+    glColor3f(0.0, 0.2, 0.7);
     triangulo();
 
     glFlush();

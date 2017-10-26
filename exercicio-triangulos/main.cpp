@@ -35,6 +35,17 @@ void plano_cartesiano()
     glEnd();
 }
 
+// Desenha um triângulo
+void triangulo()
+{
+    glBegin(GL_TRIANGLES);
+    glVertex2f(1, 4);
+    glVertex2f(8, 7);
+    glVertex2f(8, 1);
+    glEnd();
+}
+
+// Callback de desenho
 void desenha(void)
 {
     glMatrixMode(GL_MODELVIEW);
@@ -45,9 +56,14 @@ void desenha(void)
 
     plano_cartesiano();
 
+    // Desenha triângulo
+    glColor3f(0.7, 0.2, 0.0);
+    triangulo();
+
     glFlush();
 }
 
+// Callback de entrada do teclado
 void teclado(unsigned char tecla, int x, int y)
 {
     if (tecla == 27)
@@ -56,6 +72,7 @@ void teclado(unsigned char tecla, int x, int y)
 
 int main(int argc, char **argv)
 {
+    // GLUT
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
     glutInitWindowSize(500, 500);
@@ -63,6 +80,7 @@ int main(int argc, char **argv)
     glutDisplayFunc(desenha);
     glutKeyboardFunc(teclado);
 
+    // GL
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(MIN_X, MAX_X, MIN_Y, MAX_Y, -1, 1);

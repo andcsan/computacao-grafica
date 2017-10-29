@@ -20,11 +20,48 @@ void desenha_circulo(GLfloat raio, GLint vertices, GLenum mode, GLint r, GLint g
     glEnd();
 }
 
+void desenha_pontos_relogio()
+{
+    GLfloat raio_m1 = g_raio_relogio * 0.95; // Radio do ponto menor
+    GLfloat raio_m5 = g_raio_relogio * 0.9;  // Raio dos pontos de 5 em 5 minutos
+    GLfloat raio_h6 = g_raio_relogio * 0.9;  // Raio dos ponteiros das horas 12 3 6 9
+
+    GLboolean m5;
+    GLboolean h6;
+
+    for (float i = 0; i <= 2 * M_PI; i += 2 * M_PI / g_vertices_relogio)
+    {
+        GLint angulo = (GLint)round(i * 180 / M_PI);
+
+        glColor3ub(0, 0, 0);
+
+        if (h6 = angulo % 90 == 0)
+            glLineWidth(4);
+        else if (m5 = angulo % 5 == 0)
+            glLineWidth(2);
+        else
+            glLineWidth(1);
+
+        glBegin(GL_LINES);
+        glVertex2f(cos(i) * g_raio_relogio, sin(i) * g_raio_relogio);
+
+        if (h6)
+            glVertex2f(cos(i) * raio_h6, sin(i) * raio_h6);
+        else if (m5)
+            glVertex2f(cos(i) * raio_m5, sin(i) * raio_m5);
+        else
+            glVertex2f(cos(i) * raio_m1, sin(i) * raio_m1);
+
+        glEnd();
+    }
+}
+
 // Desenha estrutura do relógio
 void desenha_relogio()
 {
     desenha_circulo(g_raio_relogio, 120, GL_LINE_LOOP, 0, 0, 0);
     desenha_circulo(g_raio_relogio * 0.02, g_vertices_relogio, GL_TRIANGLE_FAN, 0, 0, 0);
+    desenha_pontos_relogio();
 }
 
 // Callback de desenho

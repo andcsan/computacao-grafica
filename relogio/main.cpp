@@ -20,7 +20,7 @@ void desenha_circulo(GLfloat raio, GLint vertices, GLenum mode, GLint r, GLint g
     glEnd();
 }
 
-void desenha_pontos_relogio()
+void desenha_marcacoes_relogio()
 {
     GLfloat raio_m1 = g_raio_relogio * 0.95; // Radio do ponto menor
     GLfloat raio_m5 = g_raio_relogio * 0.9;  // Raio dos pontos de 5 em 5 minutos
@@ -56,8 +56,17 @@ void desenha_pontos_relogio()
     }
 }
 
-void desenha_ponteiros_relogio(GLfloat segundos, GLfloat minutos, GLfloat horas)
+void desenha_ponteiros_relogio()
 {
+    time_t tempo;
+    struct tm *tempo_formatado;
+
+    time(&tempo);
+    tempo_formatado = localtime(&tempo);
+    GLfloat segundos = tempo_formatado->tm_sec;
+    GLfloat minutos = tempo_formatado->tm_min + segundos / 60;
+    GLfloat horas = tempo_formatado->tm_hour + minutos / 60;
+
     GLfloat angulo_segundos = segundos * (-2 * M_PI / 60) + M_PI / 2;
     GLfloat angulo_minutos = minutos * (-2 * M_PI / 60) + M_PI / 2;
     GLfloat angulo_horas = horas * (-2 * M_PI / 12) + M_PI / 2;
@@ -103,8 +112,8 @@ void desenha_relogio()
 {
     desenha_circulo(g_raio_relogio, 120, GL_LINE_LOOP, 0, 0, 0);
     desenha_circulo(g_raio_relogio * 0.02, g_vertices_relogio, GL_TRIANGLE_FAN, 0, 0, 0);
-    desenha_pontos_relogio();
-    desenha_ponteiros_relogio(20, 35, 12);
+    desenha_marcacoes_relogio();
+    desenha_ponteiros_relogio();
 }
 
 // Callback de desenho
